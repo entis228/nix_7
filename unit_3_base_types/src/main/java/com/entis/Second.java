@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.TreeMap;
 
 public class Second {
+
     public void doTask() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Second task. Enter your string");

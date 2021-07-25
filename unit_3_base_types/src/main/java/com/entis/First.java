@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class First {
+
     public void doTask() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("First task. Enter your string");
