@@ -11,6 +11,7 @@
     <modules>
         <module>unit_1_git</module>
         <module>unit_3_base_types</module>
+        <module>unit_4_arrays</module>
     </modules>
 
     <properties>
