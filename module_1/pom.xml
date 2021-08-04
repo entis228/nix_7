@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>module_1</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>level1</module>
+        <module>level2</module>
+        <module>level3</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
