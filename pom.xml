@@ -14,6 +14,7 @@
         <module>unit_4_arrays</module>
         <module>unit_5_strings</module>
         <module>module_1</module>
+        <module>unit_6_logs_and_tests</module>
     </modules>
 
     <properties>
