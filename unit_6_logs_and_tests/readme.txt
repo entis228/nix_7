@@ -1,0 +1,1 @@
+Учитывая многие народности стран мира, имена, фамилии и отчества могут быть любые. Например #&*∫Ω∆ Smith (https://stackoverflow.com/questions/7362567/java-regex-for-full-name)
