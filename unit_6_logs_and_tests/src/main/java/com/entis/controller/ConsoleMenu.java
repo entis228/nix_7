@@ -54,10 +54,7 @@ public class ConsoleMenu {
                 method.setAccessible(true);
                 method.invoke(objectWithMethods);
             } catch (Exception e) {
-                if (e instanceof NumberFormatException) {
-                    System.out.println("Incorrect input");
-                } else
-                    System.out.println(e.getMessage());
+                System.out.println("Incorrect input");
             }
             System.out.println("Press any button");
             reader.readLine();
