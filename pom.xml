@@ -16,6 +16,7 @@
         <module>module_1</module>
         <module>unit_6_logs_and_tests</module>
         <module>unit_7_exceptions</module>
+        <module>unit_8_collections</module>
     </modules>
 
     <properties>
