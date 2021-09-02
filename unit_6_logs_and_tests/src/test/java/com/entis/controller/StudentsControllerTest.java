@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 public class StudentsControllerTest {
 
     //TODO с дао проще проверять+для дао отдельно написаны тесты, что вроде должно гарантировать надежность этого слоя
-    //Сорри за дубляж кода, я устал
     private static final InMemoryStudentDao dao = new InMemoryStudentDao();
     private static final StudentController studentController = new StudentController();
     private static final ByteArrayOutputStream receiveOut = new ByteArrayOutputStream();
@@ -75,6 +74,7 @@ public class StudentsControllerTest {
         String regex = ".+ .+ .+\\((id=).+\\) (age:)\\d+ (phone:)\\d+";
         Pattern pattern = Pattern.compile(regex);
         for (int i = 0; i < outputValues.length; i++) {
+            outputValues[i]=outputValues[i].trim();
             boolean isMatch = pattern.matcher(outputValues[i]).matches();
             Assertions.assertTrue(isMatch);
             ArrayList<String> params = new ArrayList<>();
@@ -102,7 +102,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.create();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("the student was created", outputValues[3]);
+        Assertions.assertEquals("the student was created", outputValues[3].trim());
         Student student = dao.findAllStudents().get(dao.findAllStudents().size() - 1);
         Assertions.assertEquals("Vasiliy Smith Stepanovich", student.getFullName());
         Assertions.assertEquals(17, student.getAge());
@@ -119,7 +119,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.create();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("This student can't participate in the courses because fullname is not affordable", outputValues[3]);
+        Assertions.assertEquals("This student can't participate in the courses because fullname is not affordable", outputValues[3].trim());
     }
 
     @Test
@@ -132,7 +132,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.create();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("This student can't participate in the courses because age is not affordable", outputValues[3]);
+        Assertions.assertEquals("This student can't participate in the courses because age is not affordable", outputValues[3].trim());
         dao.clear();
         receiveOut.reset();
         inputValues = "Vasiliy Smith Stepanovich\n100\n0582282281\n";
@@ -140,7 +140,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.create();
         outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("This student can't participate in the courses because age is not affordable", outputValues[3]);
+        Assertions.assertEquals("This student can't participate in the courses because age is not affordable", outputValues[3].trim());
     }
 
     @Test
@@ -153,7 +153,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.create();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("This student can't participate in the courses because phone number is not affordable", outputValues[3]);
+        Assertions.assertEquals("This student can't participate in the courses because phone number is not affordable", outputValues[3].trim());
         dao.clear();
         receiveOut.reset();
         inputValues = "Vasiliy Smith Stepanovich\n17\n058228f\n";
@@ -161,7 +161,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.create();
         outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("This student can't participate in the courses because phone number is not affordable", outputValues[3]);
+        Assertions.assertEquals("This student can't participate in the courses because phone number is not affordable", outputValues[3].trim());
     }
 
     @Test
@@ -176,7 +176,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.findById();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals(student.toString(), outputValues[1]);
+        Assertions.assertEquals(student.toString(), outputValues[1].trim());
     }
 
     @Test
@@ -191,7 +191,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.findById();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("Not found", outputValues[1]);
+        Assertions.assertEquals("Not found", outputValues[1].trim());
     }
 
     @Test
@@ -206,7 +206,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.update();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("The student was updated", outputValues[4]);
+        Assertions.assertEquals("The student was updated", outputValues[4].trim());
         Student actualStudent = dao.findById(student.getId());
         Assertions.assertNotEquals(student.toString(), actualStudent.toString());
         Assertions.assertEquals(1, dao.findAllStudents().size());
@@ -224,7 +224,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.update();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("Invalid param fullname", outputValues[4]);
+        Assertions.assertEquals("Invalid param fullname", outputValues[4].trim());
         Assertions.assertEquals(1, dao.findAllStudents().size());
         Assertions.assertEquals(student, dao.findById(student.getId()));
     }
@@ -241,7 +241,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.update();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("Invalid param phone number", outputValues[4]);
+        Assertions.assertEquals("Invalid param phone number", outputValues[4].trim());
         Assertions.assertEquals(1, dao.findAllStudents().size());
         Assertions.assertEquals(student, dao.findById(student.getId()));
         dao.clear();
@@ -253,7 +253,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.update();
         outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("Invalid param phone number", outputValues[4]);
+        Assertions.assertEquals("Invalid param phone number", outputValues[4].trim());
         Assertions.assertEquals(1, dao.findAllStudents().size());
         Assertions.assertEquals(student, dao.findById(student.getId()));
     }
@@ -270,7 +270,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.update();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("Invalid param age", outputValues[4]);
+        Assertions.assertEquals("Invalid param age", outputValues[4].trim());
         Assertions.assertEquals(1, dao.findAllStudents().size());
         Assertions.assertEquals(student, dao.findById(student.getId()));
         dao.clear();
@@ -282,7 +282,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.update();
         outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("Invalid param age", outputValues[4]);
+        Assertions.assertEquals("Invalid param age", outputValues[4].trim());
         Assertions.assertEquals(1, dao.findAllStudents().size());
         Assertions.assertEquals(student, dao.findById(student.getId()));
     }
@@ -301,7 +301,7 @@ public class StudentsControllerTest {
         studentController.reader = new BufferedReader(new InputStreamReader(System.in));
         studentController.delete();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals(outputValues[1], "removed");
+        Assertions.assertEquals(outputValues[1].trim(), "removed");
         Assertions.assertEquals(9, dao.findAllStudents().size());
         Exception exception = Assertions.assertThrows(NoSuchElementException.class, () -> dao.findById(testStudent.getId()));
         Assertions.assertNotNull(exception);

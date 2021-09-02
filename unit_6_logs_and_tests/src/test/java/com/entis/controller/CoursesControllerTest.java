@@ -97,7 +97,7 @@ public class CoursesControllerTest {
         clearCourseDbAndSetToSystemInputStreamValues(userInput.toString());
         controller.create();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("Created", outputValues[3]);
+        Assertions.assertEquals("Created", outputValues[3].trim());
         List<Course> inDBCourses = courseDao.findAllCourses();
         Course course = inDBCourses.get(0);
         Assertions.assertEquals(1, inDBCourses.size());
@@ -119,7 +119,7 @@ public class CoursesControllerTest {
         clearCourseDbAndSetToSystemInputStreamValues(userInput.toString());
         controller.create();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("params of course are invalid", outputValues[3]);
+        Assertions.assertEquals("params of course are invalid", outputValues[3].trim());
         Assertions.assertEquals(0, courseDao.findAllCourses().size());
     }
 
@@ -135,7 +135,7 @@ public class CoursesControllerTest {
         clearCourseDbAndSetToSystemInputStreamValues(userInput.toString());
         controller.create();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("missing id of some student in database", outputValues[3]);
+        Assertions.assertEquals("missing id of some student in database", outputValues[3].trim());
         Assertions.assertEquals(0, courseDao.findAllCourses().size());
     }
 
@@ -155,7 +155,7 @@ public class CoursesControllerTest {
         setToSystemInputStreamValues(testCourse.getId() + "\nJava developers\n" + testStudents.get(7).getId() + "\nstop\n");
         controller.update();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("success", outputValues[4]);
+        Assertions.assertEquals("success", outputValues[4].trim());
         List<Course> inDbCourses = courseDao.findAllCourses();
         Assertions.assertEquals(1, inDbCourses.size());
         Course actualCourse = inDbCourses.get(0);
@@ -181,7 +181,7 @@ public class CoursesControllerTest {
         setToSystemInputStreamValues(testCourse.getId() + "\nJava developers\nAll you had to do, was follow dam train CJ\nstop\n");
         controller.update();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals("missing id of some student in database", outputValues[4]);
+        Assertions.assertEquals("missing id of some student in database", outputValues[4].trim());
         List<Course> inDbCourses = courseDao.findAllCourses();
         Assertions.assertEquals(1, inDbCourses.size());
         Course actualCourse = inDbCourses.get(0);
@@ -246,7 +246,7 @@ public class CoursesControllerTest {
         controller.delete();
         Assertions.assertEquals(9, courseDao.findAllCourses().size());
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals(outputValues[1], "Course was deleted");
+        Assertions.assertEquals(outputValues[1].trim(), "Course was deleted");
         Exception exception = Assertions.assertThrows(NoSuchElementException.class, () -> courseDao.findById(testCourse.getId()));
         Assertions.assertNotNull(exception);
     }
@@ -261,7 +261,7 @@ public class CoursesControllerTest {
         setToSystemInputStreamValues(testCourse.getId() + "\n" + student.getId() + '\n');
         controller.addStudentToCourseById();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals(outputValues[2], "success adding");
+        Assertions.assertEquals(outputValues[2].trim(), "success adding");
         Course actualCourse = courseDao.findById(testCourse.getId());
         Assertions.assertNotEquals(testCourse, actualCourse);
         Assertions.assertEquals(actualCourse.getStudents().size(), testCourse.getStudents().size() + 1);
@@ -279,7 +279,7 @@ public class CoursesControllerTest {
         setToSystemInputStreamValues(testCourse.getId() + "\n" + student.getId() + '\n');
         controller.removeStudentFromCourseById();
         String[] outputValues = receiveOut.toString().split("\\n");
-        Assertions.assertEquals(outputValues[2], "success removing");
+        Assertions.assertEquals(outputValues[2].trim(), "success removing");
         Course actualCourse = courseDao.findById(testCourse.getId());
         Assertions.assertNotEquals(testCourse, actualCourse);
         Assertions.assertEquals(actualCourse.getStudents().size(), testCourse.getStudents().size() - 1);
