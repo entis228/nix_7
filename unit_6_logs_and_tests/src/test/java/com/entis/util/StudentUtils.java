@@ -4,9 +4,9 @@ import com.entis.data.Student;
 
 public class StudentUtils {
 
-    private static final String[] names = {"Леха", "Саня", "Егор", "Нурсултан", "Игорь", "Владислав", "Владимир", "Ярослав", "Петр", "Жека"};
-    private static final String[] surnames = {"Рофланов", "Нурсултанов", "Казахстанов", "Иванов", "Кузнецов", "Хартронов", "Бочкоделов", "Борисов", "Петров", "Сидоров"};
-    private static final String[] lastnames = {"Батькович", "Нурсултанович", "Абдылханович", "Алексеевич", "Борисович", "Владиславович", "Владимирович", "Ярославович", "Петрович", "Евгенович"};
+    private static final String[] names = {"Lexa", "Alex", "Robert", "John", "Vladimir", "Joseph", "Giorno", "Boris", "Andrey", "Eugene"};
+    private static final String[] surnames = {"Smith", "Brown", "Jackson", "Since", "Koval", "Bretta", "Sagaz", "Giovanna", "Buciratti", "Noriyaki"};
+    private static final String[] lastnames = {"Alex", "Steve", "George", "Mamed", "Li", "Kentuki", "Narrow", "Josh", "Peggy", "Screw"};
 
     public static Student generateSimple() {
         Student student = new Student();
