@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class InMemoryStudentDao {
 
-    private static final String dbPath = (System.getProperty("user.dir") + "/db").replaceAll("/", File.separator);
+    private static final String dbPath = "db";
     private static final String filePath = dbPath + File.separator + "students.db";
     private List<Student> students = findAllStudents();
 
