@@ -99,7 +99,7 @@
     </dependencies>
 
     <build>
-        <finalName>zaWarudo</finalName>
+        <finalName>Unit7</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

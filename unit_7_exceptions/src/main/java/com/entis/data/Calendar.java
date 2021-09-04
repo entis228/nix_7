@@ -1,10 +1,6 @@
 package com.entis.data;
 
-import com.entis.exceptionsC.SimulatedException;
-
-import java.io.Serializable;
-
-public class Calendar extends Time implements Serializable {
+public class Calendar extends Time{
 
     private static final int millisInSecond = 1000;
     private static final int secondsInMinute = 60;
@@ -12,10 +8,7 @@ public class Calendar extends Time implements Serializable {
     private static final int hoursInDay = 24;
     private static final int daysInYear = 365;
     private static final int daysInLeapYear = 366;
-    private static final int monthInYear = 12;
     private static final long millisInDay = hoursInDay * minutesInHour * secondsInMinute * millisInSecond;
-    static private final long millisInYear = millisInDay * daysInYear;
-    static private final long millisInLeapYear = millisInDay * daysInLeapYear;
 
     public Calendar() {
     }
@@ -41,11 +34,7 @@ public class Calendar extends Time implements Serializable {
 
     public Calendar(long milliseconds) {
         if (milliseconds < 0) {
-            try {
-                throw new SimulatedException("Exception: milliseconds cant be < 0");
-            } catch (SimulatedException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Incorrect milliseconds (can't be <0)");
         }
         super.time = milliseconds;
         super.milliseconds = getMillisecondsFromTime(milliseconds);
@@ -64,10 +53,10 @@ public class Calendar extends Time implements Serializable {
             time = time + (test);
         }
         for (int i = 1; i <= year / 100; i++) {
-            if (year >= ((100 * i) + 1)) {
+            if (year >= ((100L * i) + 1)) {
                 time += millisInDay;
             }
-            if (year >= ((400 * i) + 1)) {
+            if (year >= ((400L * i) + 1)) {
                 time -= millisInDay;
             }
         }
@@ -80,7 +69,7 @@ public class Calendar extends Time implements Serializable {
             return 0;
         }
         for (int i = 0; i < month; i++) {
-            time = time + (daysInMonth(i, year) * millisInDay);
+            time = time + (daysInMonth(i+1, year) * millisInDay);
         }
         return time;
     }
@@ -93,9 +82,9 @@ public class Calendar extends Time implements Serializable {
     @Override
     public long daysInYear(long year) {
         if (isLeapYear(year)) {
-            return 366;
+            return daysInLeapYear;
         }
-        return 365;
+        return daysInYear;
     }
 
     @Override
@@ -106,7 +95,7 @@ public class Calendar extends Time implements Serializable {
     @Override
     public long getMonthsFromMillis(long millis) {
         long numberOfMonth;
-        long days = millis / millisInSecond / secondsInMinute / minutesInHour / hoursInDay;
+        long days = millis / millisInDay;
         numberOfMonth = 1;
         final long currentMillis = getYearsFromMillis(millis);
         long daysInThisYear = days;
@@ -129,18 +118,18 @@ public class Calendar extends Time implements Serializable {
         int count = 0;
         long days = millis / hoursInDay / minutesInHour / secondsInMinute / millisInSecond;
         while (true) {
-            if (days >= 365) {
+            if (days >= daysInYear) {
                 switch (++count) {
                     case 1:
                     case 2:
                     case 3: {
                         numberOfYears++;
-                        days = days - 365;
+                        days = days - daysInYear;
                         break;
                     }
                     case 4: {
                         numberOfYears++;
-                        days = days - 366;
+                        days = days - daysInLeapYear;
                         count = 0;
                         break;
                     }
@@ -155,7 +144,7 @@ public class Calendar extends Time implements Serializable {
     @Override
     public long getDaysFromMillis(long milliseconds) {
         int fourYears = (daysInYear * 3 + daysInLeapYear);
-        long daysInThisYear = ((milliseconds / millisInSecond / secondsInMinute / minutesInHour / hoursInDay) % fourYears) % 365;
+        long daysInThisYear = ((milliseconds / millisInSecond / secondsInMinute / minutesInHour / hoursInDay) % fourYears) % daysInYear;
         long nowYear = getYearsFromMillis(milliseconds);
         for (int i = 0; i < 12; i++) {
             if (daysInThisYear >= daysInMonth(i + 1, nowYear)) {
@@ -222,63 +211,59 @@ public class Calendar extends Time implements Serializable {
     }
 
     public void print(Calendar calendar) {
-        System.out.print(calendar.days + " |");
+        System.out.print(calendar.days);
         switch ((int) calendar.months) {
             case 1: {
-                System.out.print("  Январь January     |");
+                System.out.print(" January ");
             }
             break;
             case 2: {
-                System.out.print("  Февраль February   |");
+                System.out.print(" February ");
             }
             break;
             case 3: {
-                System.out.print("  Март March         |");
+                System.out.print(" March ");
             }
             break;
             case 4: {
-                System.out.print("  Апрель April       |");
+                System.out.print(" April ");
             }
             break;
             case 5: {
-                System.out.print("  Май May            |");
+                System.out.print(" May ");
             }
             break;
             case 6: {
-                System.out.print("  Июнь June          |");
+                System.out.print(" June ");
             }
             break;
             case 7: {
-                System.out.print("  Июль July          |");
+                System.out.print(" July ");
             }
             break;
             case 8: {
-                System.out.print("  Август August      |");
+                System.out.print(" August ");
             }
             break;
             case 9: {
-                System.out.print("  Сентябрь September |");
+                System.out.print(" September ");
             }
             break;
             case 10: {
-                System.out.print("   Октябрь October   |");
+                System.out.print(" October ");
             }
             break;
             case 11: {
-                System.out.print("   Ноябрь November |");
+                System.out.print(" November ");
             }
             break;
             case 12: {
-                System.out.print("  Декабрь December |");
+                System.out.print(" December ");
             }
             break;
         }
         System.out.printf(" %04d ", calendar.years);
-        System.out.print(calendar.hours + " : ");
-        System.out.print(calendar.minutes + " : ");
-        System.out.print(calendar.seconds + " : ");
-        System.out.print(calendar.milliseconds);
-        System.out.println();
+        System.out.println(calendar.hours + " : "+calendar.minutes + " : "+calendar.seconds + " : "+calendar.milliseconds);
     }
 
     @Override

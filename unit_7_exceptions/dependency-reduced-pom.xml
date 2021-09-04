@@ -14,7 +14,7 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
-    <finalName>zaWarudo</finalName>
+    <finalName>Unit7</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>

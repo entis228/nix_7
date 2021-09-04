@@ -1,9 +1,9 @@
-package com.entis.utill;
+package com.entis.util;
 
 import com.entis.data.Calendar;
 import com.entis.data.Time;
 
-public class NixDate {
+public class TimeUtils {
 
     public Time findDifferenceBetweenDates(Time timeStart, Time timeEnd) {
         return new Calendar(timeStart.time - timeEnd.time);
@@ -17,7 +17,7 @@ public class NixDate {
         return new Calendar(timeEnd.time - timeStart.time);
     }
 
-    public Time[] sortTimesFromLowToHight(Time[] times) {
+    public Time[] sortTimesFromLowToHigh(Time[] times) {
         boolean isSorted = false;
         Time buf;
         while (!isSorted) {
@@ -34,7 +34,7 @@ public class NixDate {
         return times;
     }
 
-    public Time[] sortTimesFromHightToLow(Time[] times) {
+    public Time[] sortTimesFromHighToLow(Time[] times) {
         boolean isSorted = false;
         Time buf;
         while (!isSorted) {

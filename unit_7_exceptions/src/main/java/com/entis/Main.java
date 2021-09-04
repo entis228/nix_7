@@ -1,16 +1,19 @@
 package com.entis;
 
-import java.util.Scanner;
+import com.entis.controller.ConsoleMenu;
+import com.entis.controller.TimeController;
 
-import com.entis.controllers.Controller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 public class Main {
-//  private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
-//  private static final Logger LOGGER_WARN = LoggerFactory.getLogger("warn");
-  public static void main(String[] args) {
-//    LOGGER_INFO.info("Start!");
 
-  }
+    public static void main(String[] args) {
+        try {
+            ConsoleMenu menu = new ConsoleMenu(new TimeController(), "setFormat", "differenceInDates", "addTimeToDate", "subtract", "sortTimesFromHighToLow",
+                    "sortTimesFromLowToHigh");
+            menu.loop();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

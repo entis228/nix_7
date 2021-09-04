@@ -14,7 +14,7 @@ public class Parser {
     private long minutes;
     private long hours;
     private long days;
-    private long mounths = 1;
+    private long month = 1;
     private long years;
     private String format = "";
 
@@ -25,37 +25,37 @@ public class Parser {
         return instance;
     }
 
-    public Time ParseDdMmYyyyHhMmSsMSmsToCalendarDateFormat(String ddMmYyyyHhMmSsMSms, String format) {
+    public Time ParseDayMonthYearHourEtcToCalendarDateFormat(String data, String format) {
         this.format = format;
-        String check = ddMmYyyyHhMmSsMSms.toLowerCase();
-        ddMmYyyyHhMmSsMSms = check.replaceAll("( )+", " ");
-        parseTimeFromDdMmYyyyHhMmSsMSms(ddMmYyyyHhMmSsMSms);
-        ddMmYyyyHhMmSsMSms = formatStrindCastToDateFormat(ddMmYyyyHhMmSsMSms);
-        parseDateFromDdMmYyyyHhMmSsMSms(ddMmYyyyHhMmSsMSms);
-        return new Calendar(milliseconds, seconds, minutes, hours, days, mounths, years);
+        String check = data.toLowerCase();
+        data = check.replaceAll("( )+", " ");
+        parseTimeDaysMonthYearEtc(data);
+        data = stringToDateFormat(data);
+        parseDateFromDdMmYyyyHhMmSsMSms(data);
+        return new Calendar(milliseconds, seconds, minutes, hours, days, month, years);
     }
 
-    private String formatStrindCastToDateFormat(String ddMmYyyyHhMmSsMSms) {
+    private String stringToDateFormat(String time) {
         if (format.equals("dd/mm/yy hh:mm:ss:msmsms")) {
-            Matcher takeDate = Pattern.compile("(\\d\\d|\\d| )"
+            Matcher selectedDate = Pattern.compile("(\\d\\d|\\d| )"
                     + "[- /.]"
                     + "(\\d\\d)"
                     + "[- /.]"
                     + "(\\d\\d\\d\\d|\\d\\d\\d|\\d\\d|\\d| )"
-                    + "").matcher(ddMmYyyyHhMmSsMSms);
-            char spliter = '/';
-            if (takeDate.find()) {
-                String castDate = takeDate.group();
+                    + "").matcher(time);
+            char splitter = '/';
+            if (selectedDate.find()) {
+                String castDate = selectedDate.group();
                 if (!String.valueOf(castDate.charAt(0)).matches("\\d")) {
-                    spliter = castDate.charAt(0);
+                    splitter = castDate.charAt(0);
                 }
                 if (!String.valueOf(castDate.charAt(1)).matches("\\d")) {
-                    spliter = castDate.charAt(1);
+                    splitter = castDate.charAt(1);
                 }
                 if (!String.valueOf(castDate.charAt(2)).matches("\\d")) {
-                    spliter = castDate.charAt(2);
+                    splitter = castDate.charAt(2);
                 }
-                String[] splitArray = castDate.split(String.valueOf(spliter));
+                String[] splitArray = castDate.split(String.valueOf(splitter));
                 return splitArray[0] + "/" + splitArray[1] + "/" + splitArray[2];
             }
         }
@@ -65,7 +65,7 @@ public class Parser {
                     + "(\\d\\d)"
                     + "[- /.]"
                     + "(\\d\\d\\d\\d|\\d\\d\\d|\\d\\d|\\d| )"
-                    + "").matcher(ddMmYyyyHhMmSsMSms);
+                    + "").matcher(time);
             char spliter = '/';
             if (takeDate.find()) {
                 String castDate = takeDate.group();
@@ -94,7 +94,7 @@ public class Parser {
                             + "(\\d\\d)"
                             + "[- /.]"
                             + "(\\d\\d\\d\\d|\\d\\d\\d|\\d\\d|\\d| )"
-                            + "").matcher(ddMmYyyyHhMmSsMSms);
+                            + "").matcher(time);
             char spliter = '/';
             if (takeDate.find()) {
                 String castDate = takeDate.group();
@@ -199,7 +199,7 @@ public class Parser {
                     + "january?|february?|march?|april?|may|june?|july?|august?|september?|october?|november?|december?)"
                     + "[- /.]"
                     + "(\\d\\d\\d\\d|\\d\\d\\d|\\d\\d|\\d| )"
-                    + "").matcher(ddMmYyyyHhMmSsMSms);
+                    + "").matcher(time);
             char spliter = '/';
             if (takeDate.find()) {
                 String castDate = takeDate.group();
@@ -293,14 +293,14 @@ public class Parser {
                 return splitArray[0] + "/" + splitArray[1] + "/" + splitArray[2];
             }
         }
-        return ddMmYyyyHhMmSsMSms;
+        return time;
     }
 
-    private void parseTimeFromDdMmYyyyHhMmSsMSms(String ddMmYyyyHhMmSsMSms) {
+    private void parseTimeDaysMonthYearEtc(String date) {
         Matcher matcherTimeNumbers = Pattern
                 .compile(
                         "([0-9]|0[0-9]|1[0-9]|2[0-3]|)[:]([0-9]|[0-5][0-9]|)[:]([0-9]|[0-5][0-9]|)[:](\\d\\d\\d|\\d\\d|\\d| )")
-                .matcher(ddMmYyyyHhMmSsMSms);
+                .matcher(date);
         if (matcherTimeNumbers.find()) {
             StringBuilder buf = new StringBuilder(matcherTimeNumbers.group());
             if (!buf.toString().matches("\\d\\d:\\d\\d:\\d\\d:\\d\\d\\d")) {
@@ -331,11 +331,11 @@ public class Parser {
                     buf.append(split[i]).append(":");
                 }
             }
-            String ddMmYyyyHhMmSsMSmsFirstElem = String.valueOf(buf.charAt(0));
-            if (ddMmYyyyHhMmSsMSmsFirstElem.equals(":")) {
+            String firstElement = String.valueOf(buf.charAt(0));
+            if (firstElement.equals(":")) {
                 buf.insert(0, "00");
             }
-            if (ddMmYyyyHhMmSsMSmsFirstElem.equals(":")) {
+            if (firstElement.equals(":")) {
                 buf.append("0000");
             }
             char[] charsBuf = buf.toString().toCharArray();
@@ -420,17 +420,17 @@ public class Parser {
                     buf.append(split[i]).append("/");
                 }
             }
-            String[] ddMmYyyyHhMmSsMSmsArray = buf.toString().split("/");
-            for (int i = 0; i < ddMmYyyyHhMmSsMSmsArray.length; i++) {
+            String[] formatArray = buf.toString().split("/");
+            for (int i = 0; i < formatArray.length; i++) {
                 switch (i + 1) {
                     case 1:
-                        days = Long.parseLong(ddMmYyyyHhMmSsMSmsArray[i]);
+                        days = Long.parseLong(formatArray[i]);
                         break;
                     case 2:
-                        mounths = Long.parseLong(ddMmYyyyHhMmSsMSmsArray[i]);
+                        month = Long.parseLong(formatArray[i]);
                         break;
                     case 3:
-                        years = Long.parseLong(ddMmYyyyHhMmSsMSmsArray[i]);
+                        years = Long.parseLong(formatArray[i]);
                         break;
                 }
             }
