@@ -32,7 +32,7 @@ public class ConsoleMenu {
             System.out.println();
         try {
             if (System.getProperty("os.name").contains("Windows")) {
-                Runtime.getRuntime().exec("cls");
+
             } else {
                 Runtime.getRuntime().exec("clear");
                 System.out.print("\033[H\033[2J");
