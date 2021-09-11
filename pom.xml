@@ -17,6 +17,10 @@
         <module>unit_6_logs_and_tests</module>
         <module>unit_7_exceptions</module>
         <module>unit_8_collections</module>
+        <module>unit_9_ionio</module>
+        <module>unit_9_ionio</module>
+        <module>unit_9_ionio</module>
+        <module>file_crud</module>
     </modules>
 
     <properties>
