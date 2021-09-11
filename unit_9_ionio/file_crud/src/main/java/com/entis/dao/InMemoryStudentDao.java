@@ -15,11 +15,11 @@ public class InMemoryStudentDao implements StudentDao {
 
     private static final String dbPath = "db";
     private static final String filePath = dbPath + File.separator + "students.json";
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private List<Student> students = findAllStudents();
-    private static final Gson gson=new GsonBuilder().setPrettyPrinting().create();
 
     public void create(Student student) {
-        students=findAllStudents();
+        students = findAllStudents();
         student.setId(generateId());
         students.add(student);
         saveAllStudents(students);
@@ -31,7 +31,7 @@ public class InMemoryStudentDao implements StudentDao {
     }
 
     public void update(Student student) {
-        students=findAllStudents();
+        students = findAllStudents();
         Student inDbUser = findById(student.getId());
         inDbUser.setAge(student.getAge());
         inDbUser.setFullName(student.getFullName());
@@ -40,15 +40,17 @@ public class InMemoryStudentDao implements StudentDao {
     }
 
     public void delete(String id) {
-        students=findAllStudents();
+        students = findAllStudents();
         students.removeIf(student -> student.getId().equals(id));
         saveAllStudents(students);
     }
 
     public List<Student> findAllStudents() {
         try {
-            List<Student>res= gson.fromJson(new FileReader(filePath),new TypeToken<List<Student>>(){}.getType());
-            if(res==null)throw new FileNotFoundException();
+            List<Student> res = gson.fromJson(new FileReader(filePath), new TypeToken<List<Student>>() {
+
+            }.getType());
+            if (res == null) throw new FileNotFoundException();
             return res;
         } catch (FileNotFoundException e) {
             ArrayList<Student> res = new ArrayList<>();
@@ -72,15 +74,15 @@ public class InMemoryStudentDao implements StudentDao {
     }
 
     private void saveAllStudents(List<Student> lst) {
-        try (BufferedWriter writer=new BufferedWriter(new FileWriter(filePath))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             String json = gson.toJson(lst);
             writer.write(json);
         } catch (IOException e) {
-            if(e instanceof FileNotFoundException){
+            if (e instanceof FileNotFoundException) {
                 initDBFolder();
                 saveAllStudents(new ArrayList<>());
-            }else
-            e.printStackTrace();
+            } else
+                e.printStackTrace();
         }
     }
 
@@ -91,6 +93,5 @@ public class InMemoryStudentDao implements StudentDao {
         }
         return id;
     }
-
 
 }

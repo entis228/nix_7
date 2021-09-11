@@ -2,7 +2,6 @@ package com.entis.dao;
 
 import com.entis.dao.interfaces.CourseDao;
 import com.entis.data.Course;
-import com.entis.data.Student;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -16,34 +15,8 @@ public class InMemoryCourseDao implements CourseDao {
 
     private static final String dbPath = "db";
     private static final String filePath = dbPath + File.separator + "courses.json";
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private List<Course> courses = findAllCourses();
-    private static final Gson gson=new GsonBuilder().setPrettyPrinting().create();
-
-    public List<Course> findAllCourses() {
-        try {
-            List<Course>res= gson.fromJson(new FileReader(filePath),new TypeToken<List<Course>>(){}.getType());
-            if(res==null)throw new FileNotFoundException();
-            return res;
-        } catch (FileNotFoundException e) {
-            ArrayList<Course> res = new ArrayList<>();
-            saveAllCourses(res);
-            return res;
-        }
-    }
-//    try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(filePath))) {
-//        return (List<Course>) objectInputStream.readObject();
-//    } catch (FileNotFoundException e) {
-//        ArrayList<Course> res = new ArrayList<>();
-//        saveAllCourses(res);
-//        return res;
-//    } catch (ClassNotFoundException | IOException e) {
-//        e.printStackTrace();
-//        return null;
-//    }
-
-    public void clear() {
-        saveAllCourses(new ArrayList<>());
-    }
 
     private static void initDBFolder() {
         try {
@@ -55,28 +28,36 @@ public class InMemoryCourseDao implements CourseDao {
         }
     }
 
-    private void saveAllCourses(List<Course> lst) {
-        try (BufferedWriter writer=new BufferedWriter(new FileWriter(filePath))){
-            String json = gson.toJson(lst);
-            writer.write(json);
-        } catch (IOException e) {
-            if(e instanceof FileNotFoundException){
-                initDBFolder();
-                saveAllCourses(new ArrayList<>());
-            }else
-                e.printStackTrace();
+    public List<Course> findAllCourses() {
+        try {
+            List<Course> res = gson.fromJson(new FileReader(filePath), new TypeToken<List<Course>>() {
+
+            }.getType());
+            if (res == null) throw new FileNotFoundException();
+            return res;
+        } catch (FileNotFoundException e) {
+            ArrayList<Course> res = new ArrayList<>();
+            saveAllCourses(res);
+            return res;
         }
     }
 
-//    try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filePath))) {
-//        outputStream.writeObject(lst);
-//    } catch (IOException e) {
-//        if (e instanceof FileNotFoundException) {
-//            initDBFolder();
-//            saveAllCourses(lst);
-//        } else e.printStackTrace();
-//    }
-//    courses = lst;
+    public void clear() {
+        saveAllCourses(new ArrayList<>());
+    }
+
+    private void saveAllCourses(List<Course> lst) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            String json = gson.toJson(lst);
+            writer.write(json);
+        } catch (IOException e) {
+            if (e instanceof FileNotFoundException) {
+                initDBFolder();
+                saveAllCourses(new ArrayList<>());
+            } else
+                e.printStackTrace();
+        }
+    }
 
     public void create(Course course) {
         course.setId(generateId());
@@ -97,7 +78,7 @@ public class InMemoryCourseDao implements CourseDao {
     }
 
     public void delete(String id) {
-        courses=findAllCourses();
+        courses = findAllCourses();
         courses.removeIf(course -> course.getId().equals(id));
         saveAllCourses(courses);
     }
@@ -109,6 +90,5 @@ public class InMemoryCourseDao implements CourseDao {
         }
         return id;
     }
-
 
 }

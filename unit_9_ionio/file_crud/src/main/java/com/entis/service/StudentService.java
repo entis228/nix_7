@@ -19,7 +19,7 @@ public class StudentService {
     private final StudentDao studentDao = new InMemoryStudentDao();
 
     public String create(Student student) {
-        String param="student";
+        String param = "student";
         if (fullNameValidate(student.getFullName())) {
             if (checkedAgeCorrectly(student.getAge())) {
                 if (phoneNumberValidate(student.getPhoneNumber())) {

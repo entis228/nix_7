@@ -11,9 +11,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class ConsoleMenu {
+
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
     private final String[] optArray;
     private final Object objectWithMethods;
-    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     public ConsoleMenu(Object objectWithMethods, String... options) {
         LinkedList<String> optListWithoutExit = new LinkedList<>();
@@ -29,11 +30,10 @@ public class ConsoleMenu {
     private static void clearScreen() {
         for (int i = 0; i < 50; i++)
             System.out.println();
-        try{
-            if (System.getProperty("os.name").contains("Windows"))
-            {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
                 Runtime.getRuntime().exec("cls");
-            }else{
+            } else {
                 Runtime.getRuntime().exec("clear");
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
@@ -67,10 +67,9 @@ public class ConsoleMenu {
                 Method method = objectWithMethods.getClass().getDeclaredMethod(optArray[selectedNumber - 1]);
                 method.setAccessible(true);
                 method.invoke(objectWithMethods);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Incorrect input");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Something wrong");
                 LOGGER_ERROR.error(e.getCause().getMessage());
                 LOGGER_ERROR.error(Arrays.toString(e.getCause().getStackTrace()));
