@@ -1,0 +1,3 @@
+id,firstName,middleName,lastName,birthday,isMale,isActive,
+0,Vasya,Pupkin,Stepanovich,2554548,true,true,
+1,Masha,Da,Batkovna,0,false,true,
