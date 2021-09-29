@@ -19,6 +19,8 @@
         <module>unit_8_collections</module>
         <module>module_2</module>
         <module>unit_9_ionio</module>
+        <module>unit_10_jdbc</module>
+        <module>classroom</module>
     </modules>
 
     <properties>
