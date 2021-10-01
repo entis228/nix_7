@@ -21,6 +21,7 @@
         <module>unit_9_ionio</module>
         <module>unit_10_jdbc</module>
         <module>classroom</module>
+        <module>unit_11_reflection</module>
     </modules>
 
     <properties>
