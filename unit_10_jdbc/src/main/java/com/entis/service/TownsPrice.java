@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TownsPrice {
 
-    public String findWaysInGraph(ArrayList<String> stringGraph) {
+    public List<Double> findWaysInGraph(ArrayList<String> stringGraph) {
         SimpleWeightedGraph<String, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         ArrayList<String> vertexes = new ArrayList<>();
@@ -64,21 +64,20 @@ public class TownsPrice {
         return findWay(graph, stringGraph.subList(endIndex, stringGraph.size()));
     }
 
-    private String findWay(Graph<String, DefaultWeightedEdge> graph, List<String> findWay) {
+    private List<Double> findWay(Graph<String, DefaultWeightedEdge> graph, List<String> findWay) {
         int countFoundWays = Integer.parseInt(findWay.get(0));
 
         DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraShortestPath
                 = new DijkstraShortestPath<>(graph);
-
+        ArrayList<Double>result=new ArrayList<>();
         double weight;
         String[] sourceAndTarget;
-        StringBuilder output = new StringBuilder();
         for (int i = 1; i < countFoundWays + 1; i++) {
             sourceAndTarget = findWay.get(i).split(" ");
             weight = dijkstraShortestPath.getPath(sourceAndTarget[0], sourceAndTarget[1])
                     .getWeight();
-            output.append(weight).append("\n");
+            result.add(weight);
         }
-        return output.toString();
+        return result;
     }
 }

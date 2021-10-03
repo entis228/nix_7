@@ -85,7 +85,7 @@ public class ConnectionDao implements Closeable {
                     }
                 }
                 try (Statement getProblems = connection.createStatement()) {
-                    ResultSet resultSet = getProblems.executeQuery("SELECT * from problems");
+                    ResultSet resultSet = getProblems.executeQuery("SELECT * FROM problems a LEFT JOIN solutions b ON a.id = b.problem_id WHERE b.problem_id IS NULL");
                     while (resultSet.next()) {
                         int id = resultSet.getInt(1);
                         int from_id = resultSet.getInt(2);
@@ -104,9 +104,9 @@ public class ConnectionDao implements Closeable {
     public void writeSolution(List<Solution> solutions) {
         try {
             connection.setAutoCommit(false);
-            try (Statement clearSolutions = connection.createStatement()) {
-                clearSolutions.executeUpdate("DELETE FROM solutions");
-            }
+//            try (Statement clearSolutions = connection.createStatement()) {
+//                clearSolutions.executeUpdate("DELETE FROM solutions");
+//            }
             try (PreparedStatement insertSolutions = connection.prepareStatement(
                     "INSERT INTO solutions (problem_id, cost) VALUES (?, ?)"
             )) {

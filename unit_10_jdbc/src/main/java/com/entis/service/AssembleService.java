@@ -37,11 +37,11 @@ public class AssembleService {
             for (Problem problem : problems) {
                 input.add(locations.get(problem.from_id() - 1).name() + " " + locations.get(problem.to_id() - 1).name());
             }
-            String[] results = price.findWaysInGraph(input).split("\n");
+            List<Double> results = price.findWaysInGraph(input);
             List<Solution> solutions = new ArrayList<>();
-            for (int i = 0; i < results.length; i++) {
-                int cost = (int) Double.parseDouble(results[i]);
-                solutions.add(new Solution(problems.get(i).id(), cost));
+            for (int i = 0; i < results.size(); i++) {
+                double tmp=results.get(i);
+                solutions.add(new Solution(problems.get(i).id(), (int)tmp));
             }
             dao.writeSolution(solutions);
         }
