@@ -1,7 +1,9 @@
 package com.entis.dao.impl.jpa;
 
 import com.entis.dao.OperationDao;
+import com.entis.entity.Account;
 import com.entis.entity.Operation;
+import com.entis.entity.category.Category;
 import com.entis.exception.NonImplementedException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -36,8 +38,9 @@ public class JPAOperationDao implements OperationDao, Closeable {
     @Override
     public void create(Operation operation) {
         try {
-            operation.setId(generateId());
             manager.getTransaction().begin();
+            Category dbCategory=manager.find(operation.getCategory().getClass(),1L);
+            operation.setCategory(dbCategory);
             manager.persist(operation);
             manager.getTransaction().commit();
         }catch (Exception e){
@@ -70,12 +73,5 @@ public class JPAOperationDao implements OperationDao, Closeable {
     public void close() {
         if(currentFactory!=null&&!currentFactory.isClosed())
             currentFactory.close();
-    }
-
-    private Long generateId() {
-        String rawId = UUID.randomUUID().toString();
-        StringBuilder builder=new StringBuilder();
-        rawId.chars().filter(Character::isDigit).forEach(builder::append);
-        return Long.getLong(builder.toString());
     }
 }

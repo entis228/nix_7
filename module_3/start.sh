@@ -1,2 +1,2 @@
 mvn clean package
-java -jar target/Module3App.jar postgres 123456 +380682280000 data.csv
+java -jar target/Module3.jar postgres 123456 1 operations.csv

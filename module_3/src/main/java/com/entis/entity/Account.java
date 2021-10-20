@@ -14,7 +14,7 @@ public class Account {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user_id")
     @Access(AccessType.PROPERTY)
     private User user;
 

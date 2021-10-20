@@ -43,10 +43,10 @@ public class ConsoleMenu {
             System.out.println("================");
             System.out.println("======Menu======");
             for (int i = 1; i <= optArray.length; i++) {
-                if (!optArray[i - 1].equals("exit"))
+//                if (!optArray[i - 1].equals("exit"))
                     System.out.println(i + "-" + optArray[i - 1]);
             }
-            System.out.println("0-exit");
+//            System.out.println("0-exit");
             System.out.println("================");
             System.out.println("Choose your option number");
             String input = reader.readLine();
@@ -56,8 +56,8 @@ public class ConsoleMenu {
                 if (selectedNumber < 0 || selectedNumber > optArray.length) {
                     throw new NumberFormatException();
                 }
-                if (selectedNumber == 0)
-                    break;
+//                if (selectedNumber == 0)
+//                    break;
                 Method method = objectWithMethods.getClass().getDeclaredMethod(optArray[selectedNumber - 1]);
                 method.setAccessible(true);
                 method.invoke(objectWithMethods);

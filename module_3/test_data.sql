@@ -1,27 +1,13 @@
 INSERT INTO users (id, name, surname,lastname, phone) VALUES (1, 'Zeek', 'Yegger','Grishevych', '+380682280000');
 INSERT INTO users (id, name, surname,lastname, phone) VALUES (2, 'Zaycev', 'Ivan','Ivanovich', '+380682283390');
-INSERT INTO accounts (id, balance, user_id) VALUES (1, 3800, 1);
-INSERT INTO accounts (id, balance, user_id) VALUES (2, 3500, 1);
 
-INSERT INTO expense_categories (id, name) VALUES (1, 'Shop');
-INSERT INTO expense_categories (id, name) VALUES (2, 'Clothes');
-INSERT INTO expense_categories (id, name) VALUES (3, 'Products');
-INSERT INTO expense_categories (id, name) VALUES (4, 'Entertainment');
+INSERT INTO accounts (id, balance, name, user_id) VALUES (1, 3800,'Main', 1);
+INSERT INTO accounts (id, balance, name, user_id) VALUES (2, 100,'Party', 1);
 
-INSERT INTO income_categories (id, name) VALUES (1, 'Salary');
-INSERT INTO income_categories (id, name) VALUES (2, 'Gift');
-INSERT INTO income_categories (id, name) VALUES (3, 'Found');
-INSERT INTO income_categories (id, name) VALUES (4, 'Birthday');
-INSERT INTO income_categories (id, name) VALUES (5, 'New Year');
+INSERT INTO expense_category (id, name, type) VALUES (2,'Expenses',1);
+INSERT INTO income_category (id, name, type) VALUES (1,'Incomes',0);
 
-INSERT INTO operations (id, date_time, result, account_id) VALUES (21, '2021-11-10 19:40:40', -1000, 1);
-INSERT INTO operations (id, date_time, result, account_id) VALUES (22, '2021-11-10 19:40:41', 1500, 1);
-INSERT INTO operations (id, date_time, result, account_id) VALUES (23, '2021-11-10 21:45:10', -1000, 1);
-INSERT INTO operations (id, date_time, result, account_id) VALUES (24, '2021-11-10 21:45:10', 1500, 1);
-
-INSERT INTO operation_categories (id, expense_category_id, income_category_id, operation_id) VALUES (1, 1, NULL, 21);
-INSERT INTO operation_categories (id, expense_category_id, income_category_id, operation_id) VALUES (2, 2, NULL, 21);
-INSERT INTO operation_categories (id, expense_category_id, income_category_id, operation_id) VALUES (3, NULL, 1, 22);
-INSERT INTO operation_categories (id, expense_category_id, income_category_id, operation_id) VALUES (4, 1, NULL, 23);
-INSERT INTO operation_categories (id, expense_category_id, income_category_id, operation_id) VALUES (5, 2, NULL, 23);
-INSERT INTO operation_categories (id, expense_category_id, income_category_id, operation_id) VALUES (6, NULL, 1, 24);
+--не обязательно
+INSERT INTO operations (id, description, time, account_id, category_id) VALUES (1, 'exp1','2021-11-10 19:40:40',1, 2);
+INSERT INTO operations (id, description, time, account_id, category_id) VALUES (2, 'exp2','2021-11-10 19:40:50',1, 2);
+INSERT INTO operations (id, description, time, account_id, category_id) VALUES (3, 'inc1','2021-12-10 19:40:40',1, 1);

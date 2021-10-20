@@ -45,8 +45,9 @@ public class JPAccountDao implements AccountDao, Closeable {
             manager.getTransaction().begin();
             Account loaded = findById(account.getId());
             loaded.setBalance(account.getBalance());
-            loaded.setOperations(account.getOperations());
             loaded.setName(account.getName());
+            loaded.getOperations().clear();
+            account.getOperations().forEach(loaded.getOperations()::add);
             manager.getTransaction().commit();
         }catch (Exception e){
             manager.getTransaction().rollback();
