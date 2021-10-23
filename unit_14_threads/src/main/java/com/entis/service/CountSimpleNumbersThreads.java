@@ -28,8 +28,16 @@ public class CountSimpleNumbersThreads {
 
     public int countSimpleNumbers() {
         int dividerIndex = numbers.size() / 2;
-        new Thread(new Counter(0, dividerIndex)).start();
-        new Thread(new Counter(dividerIndex + 1, numbers.size() - 1)).start();
+        Thread thread1=new Thread(new Counter(0, dividerIndex));
+        Thread thread2=new Thread(new Counter(dividerIndex + 1, numbers.size() - 1));
+        thread1.start();
+        thread2.start();
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return result;
     }
 
