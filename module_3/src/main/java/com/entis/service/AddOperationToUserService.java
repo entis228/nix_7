@@ -1,50 +1,55 @@
 package com.entis.service;
 
-import com.entis.dao.AccountDao;
-import com.entis.dao.OperationDao;
-import com.entis.dao.UserDao;
 import com.entis.entity.Account;
 import com.entis.entity.Operation;
 import com.entis.entity.User;
 import com.entis.entity.category.Category;
-import com.entis.entity.category.CategoryType;
 import com.entis.exception.AccountNotFoundException;
 import com.entis.exception.UserNotFoundException;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import javax.persistence.EntityManager;
+import java.io.Closeable;
 
-public class AddOperationToUserService {
+public class AddOperationToUserService implements Closeable {
 
-    private final UserDao userDao;
-    private final AccountDao accountDao;
-    private final OperationDao operationDao;
-    private static final Logger LOGGER = LoggerFactory.getLogger(AddOperationToUserService.class);
+    private static final Configuration configuration = new Configuration().configure();
+    private final String dbUsername;
+    private final String dbPassword;
+    private SessionFactory currentFactory;
+    private final EntityManager manager;
 
-    public AddOperationToUserService(UserDao userDao, AccountDao accountDao, OperationDao operationDao) {
-        this.userDao = userDao;
-        this.accountDao = accountDao;
-        this.operationDao = operationDao;
+    public AddOperationToUserService(String dbUsername, String dbPassword) {
+        this.dbUsername = dbUsername;
+        this.dbPassword = dbPassword;
+        openFactory();
+        manager= currentFactory.createEntityManager();
     }
+
+    private void openFactory(){
+        configuration.setProperty("hibernate.connection.username",dbUsername);
+        configuration.setProperty("hibernate.connection.password",dbPassword);
+        currentFactory = configuration.buildSessionFactory();
+    }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddOperationToUserService.class);
 
     public String addOperation(Long userId, String accountName, Operation operation){
         try {
             LOGGER.info("Trying to add an operation");
-            User user = userDao.findById(userId);
-            if(user==null)throw new UserNotFoundException();
-            List<Account> userAccounts = user.getAccounts();
-            Account account;
-            try {
-                account = userAccounts.stream().filter(x -> (x.getName().equals(accountName))).findFirst().get();
-            }catch (NoSuchElementException e){
-                throw new AccountNotFoundException(accountName);
-            }
-            operation.setAccount(account);
-            operationDao.create(operation);
-            Account test=accountDao.findById(1L);
-            CategoryType type =test.getOperations().get(0).getCategory().getType();
+            manager.getTransaction().begin();
+            User dbUser=manager.find(User.class,userId);
+            Account neededAcc=dbUser.getAccounts().stream().filter(x->x.getName().equals(accountName)).findFirst().get();
+            manager.merge(neededAcc);
+            Category dbCategory=manager.find(operation.getCategory().getClass(),1L);
+            operation.setCategory(dbCategory);
+            manager.persist(operation);
+            neededAcc.getOperations().add(operation);
+            operation.setAccount(neededAcc);
+            manager.getTransaction().commit();
             LOGGER.info("Operation with id %d was created".formatted(operation.getId()));
             return "Success adding operation";
         }catch (UserNotFoundException e){
@@ -58,5 +63,10 @@ public class AddOperationToUserService {
             LOGGER.error("Operation was not added ",e);
             throw new RuntimeException(e);
         }
+    }
+
+    public void close(){
+        if(currentFactory!=null&&!currentFactory.isClosed())
+            currentFactory.close();
     }
 }

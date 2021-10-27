@@ -66,9 +66,4 @@ public class BusinessController {
         Pattern pattern=Pattern.compile(regex);
         return !pattern.matcher(date).matches();
     }
-
-    public void Exit(){
-        facade.close();
-        System.exit(0);
-    }
 }
