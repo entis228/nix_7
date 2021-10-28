@@ -40,18 +40,24 @@ public class AddOperationToUserService implements Closeable {
     public String addOperation(Long userId, String accountName, Operation operation){
         try {
             LOGGER.info("Trying to add an operation");
-            manager.getTransaction().begin();
-            User dbUser=manager.find(User.class,userId);
-            Account neededAcc=dbUser.getAccounts().stream().filter(x->x.getName().equals(accountName)).findFirst().get();
-            manager.merge(neededAcc);
-            Category dbCategory=manager.find(operation.getCategory().getClass(),1L);
-            operation.setCategory(dbCategory);
-            manager.persist(operation);
-            neededAcc.getOperations().add(operation);
-            operation.setAccount(neededAcc);
-            manager.getTransaction().commit();
-            LOGGER.info("Operation with id %d was created".formatted(operation.getId()));
-            return "Success adding operation";
+            try {
+                manager.getTransaction().begin();
+                User dbUser = manager.find(User.class, userId);
+                Account neededAcc = dbUser.getAccounts().stream().filter(x -> x.getName().equals(accountName)).findFirst().get();
+                manager.merge(neededAcc);
+                Category dbCategory = manager.find(operation.getCategory().getClass(), 1L);
+                operation.setCategory(dbCategory);
+                manager.persist(operation);
+                neededAcc.getOperations().add(operation);
+                operation.setAccount(neededAcc);
+                manager.getTransaction().commit();
+                LOGGER.info("Operation with id %d was created".formatted(operation.getId()));
+                return "Success adding operation";
+            }catch (Exception e){
+                manager.getTransaction().rollback();
+                LOGGER.error("Something wrong",e);
+                throw new RuntimeException(e);
+            }
         }catch (UserNotFoundException e){
             LOGGER.error("Operation was not added ",e);
             return "User with id "+userId+" was not found";

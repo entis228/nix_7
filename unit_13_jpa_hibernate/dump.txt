@@ -1,0 +1,9 @@
+INSERT INTO courses (id, name) VALUES(1,'Java dev');
+INSERT INTO groups (id, name, course_id) VALUES (1, 'NIX7', 1);
+INSERT INTO students (id, first_name, last_name, phone, group_id) VALUES (1, 'Tom', 'Guard', '0971112222', 1);
+INSERT INTO teachers (id, first_name, last_name) VALUES (1, 'Misha', 'Void');
+INSERT INTO themes (id, name) VALUES (1, 'JDBC');
+INSERT INTO themes (id, name) VALUES (2, 'JPA/Hibernate');
+INSERT INTO lessons (id, duration_minutes, name, start_time, group_id, teacher_id, theme_id) VALUES (1, 60, 'jdbc', CURRENT_TIMESTAMP, 1, 1, 1);
+INSERT INTO lessons (id, duration_minutes, name, start_time, group_id, teacher_id, theme_id) VALUES (2, 60, 'jpa', '2022-01-10 19:00:00', 1, 1, 2);
+INSERT INTO lessons (id, duration_minutes, name, start_time, group_id, teacher_id, theme_id) VALUES (3, 60, 'jpa', '2021-12-10 19:00:00', 1, 1, NULL);
