@@ -1,4 +1,4 @@
-package com.alevel.jeebox;
+package com.entis.ipsaver;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -35,8 +35,8 @@ public class IpSaverServlet extends HttpServlet {
         responseBody.println("<h1 align=\"center\">All visited users</h1>");
         loggedUsers.forEach((x,y)->{
             if(x.equals(clientIp))
-            responseBody.println("<h3 align=\"center\"><br>%s %s</br></h3>".formatted(x,y));
-            else responseBody.println("<h3 align=\"center\">%s %s</h3>".formatted(x,y));
+            responseBody.println("<p align=\"center\"><b>%s : %s</b></p>".formatted(x,y));
+            else responseBody.println("<p align=\"center\">%s : %s</p>".formatted(x,y));
         });
     }
 
