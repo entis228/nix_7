@@ -14,11 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @WebServlet(name = "ipsaver-servlet", urlPatterns = "/")
 public class IpSaverServlet extends HttpServlet {
 
-    private static final ConcurrentHashMap<String, String>loggedUsers=new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String>loggedUsers=new ConcurrentHashMap<>();
 
     private static final long serialVersionUID = -8948379822734246922L;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IpSaverServlet.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(IpSaverServlet.class);
 
     @Override
     public void init() {
